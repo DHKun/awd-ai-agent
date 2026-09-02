@@ -123,12 +123,6 @@ LLM 端点支持 `${ENV_VAR:-default}` 环境变量展开。**LLM 不可用不�
 - **HTTP 404** → 用例不命中但目标存活，**不**计入失败（避免误拉黑）
 - **LLM 降级** → 内置字典用例（`generated_by: dict`），照常执行
 
-## 规划文档
-
-- [`agent.md`](agent.md) — 定位 / 技术选型 / 状态机 / AI 约束 / 边界
-- [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) — 目录架构 / 数据 Schema / 分阶段路线图
-- [`AI_INIT.md`](AI_INIT.md) — 下游 AI 初始指令
-
 ## License
 
 MIT（如需商用请自备授权环境与合规审查）。
