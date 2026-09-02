@@ -1,0 +1,79 @@
+# AWD Agent — 唯一可改配置（目标/并发/超时/LLM/阈值）
+# 所有业务参数从这里读取，代码不写死。值支持 ${ENV_VAR} 展开（默认取 default）。
+
+scope:
+  # 授权边界：仅 mode: scoped 时放行 in_scope 网段内的目标，越界即拒绝。
+  mode: scoped
+  in_scope:
+    - "127.0.0.1"
+    - "10.0.0.0/8"
+    - "172.16.0.0/12"
+    - "192.168.0.0/16"
+
+targets:
+  # 初始目标清单（AWD 局内网段/端口示例，可整段展开或单点列出）
+  - "http://127.0.0.1:8080"
+  - "http://127.0.0.1:8081"
+
+concurrency:
+  max_concurrency: 50        # Semaphore 并发上限
+  probe_timeout: 8.0         # 单目标探测超时（秒）
+  exploit_timeout: 10.0      # 单用例执行超时（秒）
+  llm_timeout: 20.0          # 单次 LLM 调用硬超时（秒）
+  scheduler_grace: 30.0      # gather 整体兜底超时（秒）
+
+llm:
+  backend: ollama            # openai | ollama
+  openai:
+    base_url: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+    api_key: ${OPENAI_API_KEY:-}
+    model: ${OPENAI_MODEL:-gpt-4o-mini}
+  ollama:
+    base_url: ${OLLAMA_BASE_URL:-http://127.0.0.1:11434}
+    model: ${OLLAMA_MODEL:-qwen2.5:7b}
+  temperature: 0.1
+  retry_cap: 3               # LLM 非法输出/失败重试上限
+  analysis_attempts_cap: 2   # 单目标分析尝试上限（防死循环）
+  max_output_tokens: 2048
+
+budgets:
+  context_token_budget: 2000   # TargetContext token 预算（压缩目标 ≤2KB）
+  evidence_window: 120         # 证据片段单条最大字符数
+
+retry:
+  exploit_failure_cap: 3     # 单目标失败 N 次进 BLACKLISTED
+
+flags:
+  # flag 正则（比赛通用格式，提交前二次校验）
+  pattern: "flag\\{[^\\}]{1,256}\\}"
+  submit_url: ""             # 留空则只提取不提交（dry-run 安全默认）
+
+storage:
+  db_path: "awd_state.db"
+
+logging:
+  level: INFO
+  file: "awd_agent.log"
+
+defense:
+  hash_poll_interval: 5.0    # 文件哈希轮询间隔（秒）
+  watch_paths:
+    - "./var/www"
+  waf_rules_path: "rules/waf_rules.yaml"
+  waf_enabled: true
+  rollback_enabled: true
+
+recon:
+  # 探测的路由/探测点与常见参数（配合 dicts/ 语义字典）
+  probe_routes:
+    - "/"
+    - "/index.php"
+    - "/robots.txt"
+  risk_routes:
+    - "/.git/config"
+    - "/.env"
+    - "/phpinfo.php"
+    - "/debug"
+  common_params: ["id", "s", "page", "file", "cmd", "name"]
+  # 竞赛靶机常为自签证书；默认 true 校验，确需放行时改 false
+  tls_verify: true

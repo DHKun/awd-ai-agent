@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+awd_state.db*
+awd_agent.log
+defense_backup/
