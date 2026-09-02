@@ -1,0 +1,53 @@
+# 语义字典：漏洞关键词（LLM 降级 / payload 生成共用）
+# 格式：每行一条 keyword，# 开头为注释。
+# 用途：1) LLM 超时/失败时的内置降级字典 2) 动态语义字典的静态种子
+
+thinkphp
+invokefunction
+call_user_func
+eval
+assert
+system
+passthru
+exec
+shell_exec
+popen
+unserialize
+file_get_contents
+file_put_contents
+include
+require
+php://filter
+data://
+expect://
+upload
+backup
+dump
+sql
+union select
+information_schema
+into outfile
+load_file
+dirb
+dirscan
+phpinfo
+debug
+trace
+log
+backup.sql
+robots
+git
+svn
+tar.gz
+zip
+bak
+swp
+config
+credentials
+password
+token
+apikey
+secret
+admin
+login
+register
