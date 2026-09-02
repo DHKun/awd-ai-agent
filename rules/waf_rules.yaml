@@ -1,0 +1,38 @@
+# 轻量 WAF 规则（热加载；结构与 awd/defense/waf.py 对齐）
+# 每条规则：命中即触发 action（block/log/captcha），热加载后立即生效，无需重启。
+
+rules:
+  - id: waf-001
+    name: sql-probe
+    pattern: "(?i)(union\\s+select|sleep\\(\\d+\\)|benchmark\\(.+\\,.+\\))"
+    location: [query, body]
+    action: block
+    enabled: true
+
+  - id: waf-002
+    name: path-traversal
+    pattern: "(\\.\\./){2,}|/etc/passwd"
+    location: [query, path]
+    action: block
+    enabled: true
+
+  - id: waf-003
+    name: rce-invoke
+    pattern: "(?i)(invokefunction|call_user_func|system\\s*\\(|passthru|exec\\s*\\()"
+    location: [query, body]
+    action: block
+    enabled: true
+
+  - id: waf-004
+    name: sensitive-file-access
+    pattern: "\\.(git|env|svn)/|/\\.env"
+    location: [path]
+    action: log
+    enabled: true
+
+  - id: waf-005
+    name: scanner-ua
+    pattern: "(?i)(sqlmap|nikto|nmap|masscan|acunetix)"
+    location: [header]
+    action: block
+    enabled: true
