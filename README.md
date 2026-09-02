@@ -2,7 +2,7 @@
 
 AWD（Attack With Defense）攻防竞赛的半自动化智能 Agent：打破"写死脚本"模式，构建「侦察 → 智能打点 → Flag 提取提交 → 自防御」闭环流水线。
 
-> ⚠️ **仅用于授权学习/竞赛环境**。目标以 `config/settings.yaml` 中 `scope: scoped` 声明的网段为界，越界即拒绝（`ScopeGuard`）。
+> ⚠️ **仅用于授权学习/竞赛环境**。
 
 ## 核心特性
 
