@@ -15,7 +15,6 @@ from loguru import logger
 from awd.config import ReconConfig, ScopeGuard
 from awd.models import RouteInfo, TargetContext
 from awd.recon.context_builder import build_context
-from awd.recon.fingerprint import fingerprint_headers
 
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "

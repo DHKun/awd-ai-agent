@@ -91,8 +91,6 @@ class LLMClient:
     # ---- Ollama 后端（REST 直连，不经 SDK） -----------------------------------
 
     async def _chat_ollama(self, system: str, user: str, timeout: float, max_tokens: Optional[int]) -> str:
-        import asyncio
-
         import httpx
 
         payload: dict[str, Any] = {

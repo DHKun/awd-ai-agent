@@ -10,7 +10,7 @@ from __future__ import annotations
 import random
 import string
 
-from awd.models import RouteInfo, TargetContext
+from awd.models import RouteInfo
 from awd.recon.context_builder import (
     build_context,
     compression_ratio,

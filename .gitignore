@@ -5,3 +5,4 @@ __pycache__/
 awd_state.db*
 awd_agent.log
 defense_backup/
+.coverage

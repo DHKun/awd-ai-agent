@@ -199,7 +199,7 @@ class Agent:
         try:
             findings = await self.store.get_findings()
             tasks = await self.store.list_tasks()
-            print(f"=== AWD Agent 报表 ===")
+            print("=== AWD Agent 报表 ===")
             print(f"目标任务: {len(tasks)}")
             degraded = [t for t in tasks if t.state.value in ("failed", "blacklisted")]
             print(f"  降级/黑名单: {len(degraded)}")

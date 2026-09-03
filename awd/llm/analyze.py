@@ -20,7 +20,6 @@ from awd.llm.client import LLMClient, LLMError
 from awd.llm.prompt import ANALYZE_SYSTEM, build_analyze_user
 from awd.llm.schema import SchemaValidator, clamp_confidence
 from awd.models import TargetContext
-from awd.recon.fingerprint import is_known
 
 
 class AnalyzeResult:

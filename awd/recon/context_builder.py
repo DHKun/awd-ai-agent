@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from urllib.parse import urlsplit
 
-from awd.models import Fingerprint, RouteInfo, TargetContext
+from awd.models import RouteInfo, TargetContext
 from awd.recon.fingerprint import fingerprint_headers
 
 # GPT 系列 BPE 的工程近似：1 token ≈ 4 chars（英文/HTTP 文本经验值）。
