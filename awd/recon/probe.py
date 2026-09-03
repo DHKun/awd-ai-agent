@@ -76,6 +76,7 @@ class Prober:
         effective_url = url
 
         for attempt_url in (url, _swap_scheme(url)):
+            routes_this_scheme = 0
             try:
                 async with httpx.AsyncClient(
                     timeout=self.probe_timeout, follow_redirects=True,
@@ -90,10 +91,13 @@ class Prober:
                             fp_headers.update(fp)
                             for k, v in risk_hit.items():
                                 risk[k] = risk[k] or v
-                break  # 首个 scheme 成功即止（兜底：另一 scheme 下轮重试）
+                            routes_this_scheme += 1
             except httpx.HTTPError as e:
                 logger.debug("probe {} failed ({}), trying fallback scheme", attempt_url, type(e).__name__)
                 continue
+            # 至少探到一条路由才算该 scheme 可用；全部失败换兜底 scheme 重试
+            if routes_this_scheme > 0:
+                break
 
         return build_context(
             url=effective_url,
